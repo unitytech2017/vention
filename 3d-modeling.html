@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D 모델링 - Vention</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/assets/images/vention_remove.png" alt="Vention" class="logo-image" />
+          <h1 class="logo">Vention</h1>
+          <p class="tagline">발명 생산성 웹앱</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>홈</span>
+          </a>
+          
+          <!-- 학생용 탭 -->
+          <div id="studentNavItems">
+            <a href="patent-chatbot.html" class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>AI 변리사</span>
+            </a>
+            <a href="idea-chatbot.html" class="nav-item">
+              <span class="nav-icon">💡</span>
+              <span>아이디어 챗봇</span>
+            </a>
+            <a href="ai-sketch.html" class="nav-item">
+              <span class="nav-icon">✏️</span>
+              <span>AI스케치 정교화</span>
+            </a>
+            <a href="3d-modeling.html" class="nav-item active">
+              <span class="nav-icon">🎨</span>
+              <span>3D 모델링</span>
+            </a>
+            <a href="3d-view.html" class="nav-item">
+              <span class="nav-icon">👁️</span>
+              <span>3D 뷰</span>
+            </a>
+          </div>
+        </nav>
+        
+        <!-- 교사 모니터링 및 로그아웃 (하단) -->
+        <div class="sidebar-footer">
+          <a href="teacherMonitor.html" class="nav-item" id="teacherMonitorLink" style="display: none;">
+            <span class="nav-icon">👨‍🏫</span>
+            <span>교사 모니터링</span>
+          </a>
+          <button class="nav-item" id="sidebarLogoutBtn" style="display: none; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 컨텐츠 -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1>3D 모델링</h1>
+          <p class="subtitle">스케치를 고품질 3D 모델로 제작합니다.</p>
+        </div>
+
+        <div class="content-section">
+          <div class="modeling-container">
+            <!-- 인증 설정 -->
+            <div class="api-key-card">
+              <div class="api-key-header">
+                <h3 class="panel-title">🔑 인증 설정</h3>
+                <p class="api-key-description">다음 중 하나의 방법으로 인증해주세요.</p>
+              </div>
+              
+              <!-- 인증 방법 선택 버튼 -->
+              <div class="auth-buttons">
+                <button id="meshyApiKeyAuthBtn" class="auth-toggle-btn active">
+                  Meshy AI API 키 입력
+                </button>
+                <button id="meshyPasswordAuthBtn" class="auth-toggle-btn">
+                  비밀번호 입력
+                </button>
+              </div>
+              
+              <div id="apiKeyMessage" class="api-key-message" style="display: none;"></div>
+              
+              <!-- API 키 입력 패널 -->
+              <div id="meshyApiKeyAuthPanel" class="auth-panel active">
+                <div class="api-key-input-group">
+                  <input
+                    type="password"
+                    id="meshyApiKeyInput"
+                    placeholder="API 키를 입력하세요"
+                    class="api-key-input"
+                  />
+                  <button id="saveMeshyApiKeyBtn" class="btn btn-secondary">인증</button>
+                </div>
+                <p class="auth-hint">
+                  <a href="https://www.meshy.ai/" target="_blank" style="color: var(--accent-color);">Meshy AI API 키 발급받기</a>
+                </p>
+              </div>
+              
+              <!-- 비밀번호 입력 패널 -->
+              <div id="meshyPasswordAuthPanel" class="auth-panel" style="display: none;">
+                <div class="api-key-input-group">
+                  <input
+                    type="password"
+                    id="meshyPasswordInput"
+                    placeholder="비밀번호를 입력하세요"
+                    class="api-key-input"
+                  />
+                  <button id="saveMeshyPasswordBtn" class="btn btn-secondary">인증</button>
+                </div>
+                <p class="auth-hint">비밀번호를 입력하면 서버 API 키를 사용합니다.</p>
+              </div>
+              
+              <p class="api-key-hint" style="margin-top: 16px;">API 키 또는 비밀번호 중 하나만 입력하면 사용할 수 있습니다.</p>
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-title">
+                <span role="img" aria-label="cube">🧊</span>
+                <span>3D 모델링 가이드</span>
+              </div>
+              <p class="info-card-text">
+                'AI 스케치 정교화' 탭에서 생성된 이미지를 바탕으로 실제 3D 모델(GLB)을 생성합니다. 
+                생성된 모델은 아래 뷰어에서 확인하거나, '3D 뷰' 탭으로 보내 더 자세히 편집할 수 있습니다.
+              </p>
+            </div>
+
+          <!-- 스케치 없을 때 메시지 -->
+          <div id="noSketchMessage" class="generation-placeholder" style="display: none;">
+            <p>먼저 'AI 스케치 정교화' 탭에서 이미지를 생성해주세요.</p>
+            <p style="font-size: 14px; margin-top: 8px; color: var(--text-secondary);">
+              생성된 스케치가 여기에 표시됩니다.
+            </p>
+          </div>
+
+          <!-- 스케치가 있을 때 -->
+          <div class="modeling-content">
+            <!-- 원본 스케치 표시 -->
+            <div class="upload-panel">
+              <h3 class="panel-title">3D 모델링 원본 스케치</h3>
+              <div id="sketchContainer" class="sketch-preview-container">
+                <!-- 스케치 이미지가 여기에 표시됩니다 -->
+              </div>
+              <div style="margin-top: 16px; text-align: center;">
+                <label for="imageFileInput" class="btn btn-secondary" style="display: inline-block; cursor: pointer;">
+                  📁 다른 이미지 선택하기
+                </label>
+                <input type="file" id="imageFileInput" accept="image/*" style="display: none;" />
+              </div>
+            </div>
+
+            <!-- 생성 버튼 -->
+            <button
+              id="generateBtn"
+              class="btn btn-primary btn-full"
+              style="max-width: 400px; margin: 24px auto; background: var(--accent-color);"
+              disabled
+            >
+              3D 모델 생성하기
+            </button>
+
+            <!-- 진행 상태 표시 -->
+            <div id="statusContainer" class="status-container" style="display: none;">
+              <div class="loading-spinner">
+                <span class="loading"></span>
+              </div>
+              <div class="status-content">
+                <h4 id="statusTitle" class="status-title">3D 모델 생성 중...</h4>
+                <p class="status-description">
+                  약 1~2분 정도 소요됩니다. 잠시만 기다려주세요.
+                </p>
+              </div>
+              
+              <div class="progress-container">
+                <div class="progress-bar-wrapper">
+                  <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                </div>
+                <p id="progressText" class="progress-text">0% 완료</p>
+              </div>
+            </div>
+
+            <!-- 에러 메시지 -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- 성공 상태 -->
+            <div id="successContainer" class="success-container" style="display: none;">
+              <div class="upload-panel">
+                <div class="success-header">
+                  <h3 class="panel-title">🎉 3D 모델 생성 완료!</h3>
+                  <div class="success-actions">
+                    <button id="openInViewerBtn" class="btn btn-secondary">
+                      <span>👁️</span> 3D 뷰에서 열기
+                    </button>
+                    <button id="downloadBtn" class="btn btn-secondary">
+                      <span>📥</span> 다운로드
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/3d-modeling.js"></script>
+    <script type="module">
+      import { initAuth } from '/src/auth.js';
+      initAuth();
+    </script>
+  </body>
+</html>
+

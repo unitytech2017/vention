@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아이디어 챗봇 - Vention</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/assets/images/vention_remove.png" alt="Vention" class="logo-image" />
+          <h1 class="logo">Vention</h1>
+          <p class="tagline">발명 생산성 웹앱</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>홈</span>
+          </a>
+          
+          <!-- 학생용 탭 -->
+          <div id="studentNavItems">
+            <a href="patent-chatbot.html" class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>AI 변리사</span>
+            </a>
+            <a href="idea-chatbot.html" class="nav-item active">
+              <span class="nav-icon">💡</span>
+              <span>아이디어 챗봇</span>
+            </a>
+            <a href="ai-sketch.html" class="nav-item">
+              <span class="nav-icon">✏️</span>
+              <span>AI스케치 정교화</span>
+            </a>
+            <a href="3d-modeling.html" class="nav-item">
+              <span class="nav-icon">🎨</span>
+              <span>3D 모델링</span>
+            </a>
+            <a href="3d-view.html" class="nav-item">
+              <span class="nav-icon">👁️</span>
+              <span>3D 뷰</span>
+            </a>
+          </div>
+        </nav>
+        
+        <!-- 교사 모니터링 및 로그아웃 (하단) -->
+        <div class="sidebar-footer">
+          <a href="teacherMonitor.html" class="nav-item" id="teacherMonitorLink" style="display: none;">
+            <span class="nav-icon">👨‍🏫</span>
+            <span>교사 모니터링</span>
+          </a>
+          <button class="nav-item" id="sidebarLogoutBtn" style="display: none; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 컨텐츠 -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1>아이디어 챗봇</h1>
+          <p class="subtitle">발명 아이디어를 입력하고 AI 챗봇과 대화해보세요</p>
+        </div>
+
+        <div class="content-section">
+          <div class="activity-container">
+            <!-- 아이디어 입력 섹션 -->
+            <div class="idea-input-section" id="ideaInputSection">
+              <h2>발명 아이디어를 입력해주세요</h2>
+              <textarea 
+                id="ideaInput" 
+                class="idea-textarea" 
+                placeholder="예: 자동으로 물을 주는 화분..."
+                rows="4"
+              ></textarea>
+              <button id="startChatBtn" class="btn btn-primary">대화 시작하기</button>
+            </div>
+
+            <!-- 챗봇 대화 섹션 -->
+            <div class="chat-section" id="chatSection" style="display: none;">
+              <div class="chat-header">
+                <h2>창의성 코치와의 대화</h2>
+                <div class="turn-counter">
+                  <span id="turnCounter">0 / 3</span>
+                </div>
+              </div>
+              
+              <div class="chat-messages" id="chatMessages">
+                <!-- 메시지들이 여기에 동적으로 추가됩니다 -->
+              </div>
+
+              <div class="chat-input-area" id="chatInputArea">
+                <textarea 
+                  id="userMessage" 
+                  class="chat-textarea" 
+                  placeholder="답변을 입력하세요..."
+                  rows="2"
+                ></textarea>
+                <button id="sendMessageBtn" class="btn btn-primary">전송</button>
+              </div>
+
+              <!-- 평가 버튼 (3턴 후 표시) -->
+              <div class="evaluation-section" id="evaluationSection" style="display: none;">
+                <button id="evaluateBtn" class="btn btn-primary btn-large">아이디어 평가하기</button>
+              </div>
+            </div>
+
+            <!-- 평가 결과 섹션 -->
+            <div class="evaluation-result" id="evaluationResult" style="display: none;">
+              <h2>아이디어 평가 결과</h2>
+              <div id="evaluationContent" class="evaluation-content">
+                <!-- 평가 결과가 여기에 표시됩니다 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+      import { initAuth } from '/src/auth.js';
+      initAuth();
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 변리사 - Vention</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/assets/images/vention_remove.png" alt="Vention" class="logo-image" />
+          <h1 class="logo">Vention</h1>
+          <p class="tagline">발명 생산성 웹앱</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>홈</span>
+          </a>
+          
+          <!-- 학생용 탭 -->
+          <div id="studentNavItems">
+            <a href="patent-chatbot.html" class="nav-item active">
+              <span class="nav-icon">📋</span>
+              <span>AI 변리사</span>
+            </a>
+            <a href="idea-chatbot.html" class="nav-item">
+              <span class="nav-icon">💡</span>
+              <span>아이디어 챗봇</span>
+            </a>
+            <a href="ai-sketch.html" class="nav-item">
+              <span class="nav-icon">✏️</span>
+              <span>AI스케치 정교화</span>
+            </a>
+            <a href="3d-modeling.html" class="nav-item">
+              <span class="nav-icon">🎨</span>
+              <span>3D 모델링</span>
+            </a>
+            <a href="3d-view.html" class="nav-item">
+              <span class="nav-icon">👁️</span>
+              <span>3D 뷰</span>
+            </a>
+          </div>
+        </nav>
+        
+        <!-- 교사 모니터링 및 로그아웃 (하단) -->
+        <div class="sidebar-footer">
+          <a href="teacherMonitor.html" class="nav-item" id="teacherMonitorLink" style="display: none;">
+            <span class="nav-icon">👨‍🏫</span>
+            <span>교사 모니터링</span>
+          </a>
+          <button class="nav-item" id="sidebarLogoutBtn" style="display: none; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 컨텐츠 -->
+      <main class="main-content patent-page">
+        <div class="page-header">
+          <h1>AI 변리사</h1>
+          <p class="subtitle">지식재산권에 대해 알아보세요</p>
+        </div>
+
+        <div class="content-section">
+          <div class="ip-content-wrapper">
+          <!-- Hero Section -->
+          <div class="ip-hero">
+            <h2 class="ip-hero-title">지식재산권<br><span class="ip-hero-subtitle">Intellectual Property Rights</span></h2>
+            <p class="ip-hero-description">
+              당신의 아이디어를 보호하는 법적 권리. <br>
+              <strong>산업재산권</strong>, <strong>저작권</strong>, 그리고 <strong>신지식재산권</strong>의 세계를 탐험하세요.
+            </p>
+          </div>
+
+          <!-- Section 1: Overview -->
+          <section class="ip-section">
+            <div class="ip-overview-grid">
+              <div class="ip-overview-card ip-card-blue">
+                <div class="ip-card-icon">🏭</div>
+                <h3 class="ip-card-title">산업재산권</h3>
+                <p class="ip-card-text">산업 발전을 목적.<br>특허청 <strong>등록 필수</strong>.</p>
+              </div>
+              <div class="ip-overview-card ip-card-purple">
+                <div class="ip-card-icon">🎨</div>
+                <h3 class="ip-card-title">저작권</h3>
+                <p class="ip-card-text">문화 향상을 목적.<br>창작 즉시 <strong>자동 발생</strong>.</p>
+              </div>
+              <div class="ip-overview-card ip-card-cyan">
+                <div class="ip-card-icon">🚀</div>
+                <h3 class="ip-card-title">신지식재산권</h3>
+                <p class="ip-card-text">첨단 기술과 정보.<br>SW, 영업비밀 등.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 2: Industrial Property Rights -->
+          <section class="ip-section">
+            <div class="ip-content-card">
+              <div class="ip-section-header ip-header-blue">
+                <h2 class="ip-section-title">1. 산업재산권 (Industrial Property)</h2>
+                <p class="ip-section-description">
+                  산업재산권은 기술적 창작이나 산업 표지를 보호하여 산업 발전에 기여합니다. 
+                  가장 중요한 특징은 <strong>"등록주의"</strong>입니다. 특허청에 등록하지 않으면 권리가 발생하지 않습니다.
+                  아래 차트는 각 권리의 보호 기간을 비교합니다.
+                </p>
+              </div>
+
+              <div class="ip-chart-container">
+                <div class="ip-chart-wrapper">
+                  <div class="ip-chart-header">
+                    <h4 class="ip-chart-title">권리별 보호 기간 비교 (년)</h4>
+                    <div class="ip-chart-box">
+                      <canvas id="industrialChart"></canvas>
+                    </div>
+                    <p class="ip-chart-note">* 상표권은 10년마다 갱신하여 영구 소유 가능</p>
+                  </div>
+                </div>
+
+                <div class="ip-details-list">
+                  <div class="ip-detail-item">
+                    <div class="ip-detail-number ip-number-blue">1</div>
+                    <div class="ip-detail-content">
+                      <h4 class="ip-detail-title">특허권 (Patent)</h4>
+                      <p class="ip-detail-text">
+                        <span class="ip-badge ip-badge-blue">고도 기술</span>
+                        자연법칙을 이용한 고도화된 기술적 발명. (예: 신약, 스마트폰 핵심 기술)
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="ip-detail-item">
+                    <div class="ip-detail-number ip-number-green">2</div>
+                    <div class="ip-detail-content">
+                      <h4 class="ip-detail-title">실용신안권 (Utility Model)</h4>
+                      <p class="ip-detail-text">
+                        <span class="ip-badge ip-badge-green">개량 기술</span>
+                        물품의 형상, 구조의 실용적 개량. (예: 컵 손잡이, 볼펜 구조)
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="ip-detail-item">
+                    <div class="ip-detail-number ip-number-purple">3</div>
+                    <div class="ip-detail-content">
+                      <h4 class="ip-detail-title">디자인권 (Design)</h4>
+                      <p class="ip-detail-text">
+                        <span class="ip-badge ip-badge-purple">심미감</span>
+                        물품의 시각적 외관, 형상, 모양. (예: 캐릭터 상품, 자동차 외관)
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="ip-detail-item">
+                    <div class="ip-detail-number ip-number-orange">4</div>
+                    <div class="ip-detail-content">
+                      <h4 class="ip-detail-title">상표권 (Trademark)</h4>
+                      <p class="ip-detail-text">
+                        <span class="ip-badge ip-badge-orange">식별 표지</span>
+                        타사 제품과 구별되는 로고, 이름. (예: 브랜드 로고)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 3: Copyright -->
+          <section class="ip-section">
+            <div class="ip-content-card">
+              <div class="ip-section-header ip-header-purple">
+                <h2 class="ip-section-title">2. 저작권 (Copyright)</h2>
+                <p class="ip-section-description">
+                  저작권은 인간의 사상이나 감정을 표현한 창작물에 부여됩니다. 산업재산권과 달리 
+                  <strong>"별도의 절차 없이 창작과 동시에"</strong> 권리가 발생합니다.
+                </p>
+              </div>
+
+              <div class="ip-copyright-container">
+                <div class="ip-timeline-wrapper">
+                  <h3 class="ip-timeline-title">저작권 보호 기간 (Timeline)</h3>
+                  <div class="ip-timeline">
+                    <div class="ip-timeline-item">
+                      <div class="ip-timeline-dot ip-dot-purple"></div>
+                      <div class="ip-timeline-content ip-content-purple">
+                        <h4 class="ip-timeline-heading">창작 시점 (Creation)</h4>
+                        <p class="ip-timeline-text">권리 자동 발생 (무방식주의)</p>
+                      </div>
+                    </div>
+                    <div class="ip-timeline-item">
+                      <div class="ip-timeline-dot ip-dot-purple-light"></div>
+                      <div class="ip-timeline-content">
+                        <h4 class="ip-timeline-heading">저작자 생존 기간</h4>
+                        <p class="ip-timeline-text">평생 동안 보호됨</p>
+                      </div>
+                    </div>
+                    <div class="ip-timeline-item">
+                      <div class="ip-timeline-dot ip-dot-gray"></div>
+                      <div class="ip-timeline-content ip-content-gray">
+                        <h4 class="ip-timeline-heading">저작자 사후 (Death)</h4>
+                        <p class="ip-timeline-text">사망 시점부터 카운트 시작</p>
+                      </div>
+                    </div>
+                    <div class="ip-timeline-item">
+                      <div class="ip-timeline-dot ip-dot-red"></div>
+                      <div class="ip-timeline-content ip-content-red">
+                        <h4 class="ip-timeline-heading">+ 70년 (70 Years)</h4>
+                        <p class="ip-timeline-text">사후 70년까지 보호 후 소멸</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-copyright-rights">
+                  <h3 class="ip-rights-title">저작권의 두 가지 권리</h3>
+                  
+                  <div class="ip-right-card ip-right-personality">
+                    <div class="ip-right-header">
+                      <span class="ip-right-icon">👤</span>
+                      <h4 class="ip-right-name">저작인격권</h4>
+                    </div>
+                    <p class="ip-right-description">
+                      저작자의 명예와 인격적 이익 보호. <strong>양도 불가능.</strong>
+                    </p>
+                    <ul class="ip-right-list">
+                      <li>공표권 (공개 결정)</li>
+                      <li>성명표시권 (이름 표기)</li>
+                      <li>동일성유지권 (내용 변경 금지)</li>
+                    </ul>
+                  </div>
+
+                  <div class="ip-right-card ip-right-economic">
+                    <div class="ip-right-header">
+                      <span class="ip-right-icon">💰</span>
+                      <h4 class="ip-right-name">저작재산권</h4>
+                    </div>
+                    <p class="ip-right-description">
+                      경제적 이익을 목적으로 하는 권리. <strong>양도/매매 가능.</strong>
+                    </p>
+                    <ul class="ip-right-list">
+                      <li>복제권 (Copy)</li>
+                      <li>배포권 (Distribute)</li>
+                      <li>공연권 / 전송권 등</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4: New IP -->
+          <section class="ip-section">
+            <div class="ip-content-card ip-card-dark">
+              <div class="ip-newip-header">
+                <div>
+                  <h2 class="ip-section-title ip-title-cyan">3. 신지식재산권 (New IP)</h2>
+                  <p class="ip-section-description ip-desc-light">
+                    과학기술의 발달과 함께 등장한 새로운 권리들입니다. 전통적인 산업재산권이나 저작권으로 보호하기 애매한 영역을 포괄합니다.
+                  </p>
+                </div>
+              </div>
+
+              <div class="ip-newip-grid">
+                <div class="ip-newip-card">
+                  <h4 class="ip-newip-card-title ip-title-yellow">첨단산업재산권</h4>
+                  <p class="ip-newip-card-text">기술 집약적 산업의 결과물</p>
+                  <div class="ip-newip-tags">
+                    <span class="ip-newip-tag">반도체 배치 설계</span>
+                    <span class="ip-newip-tag">생명공학</span>
+                    <span class="ip-newip-tag">식물신품종</span>
+                  </div>
+                </div>
+                <div class="ip-newip-card">
+                  <h4 class="ip-newip-card-title ip-title-green">산업저작권</h4>
+                  <p class="ip-newip-card-text">산업과 저작권의 융합</p>
+                  <div class="ip-newip-tags">
+                    <span class="ip-newip-tag">컴퓨터 프로그램 (SW)</span>
+                    <span class="ip-newip-tag">소프트웨어</span>
+                  </div>
+                </div>
+                <div class="ip-newip-card">
+                  <h4 class="ip-newip-card-title ip-title-pink">정보재산권</h4>
+                  <p class="ip-newip-card-text">무형의 정보 자산</p>
+                  <div class="ip-newip-tags">
+                    <span class="ip-newip-tag">영업비밀 (Trade Secret)</span>
+                    <span class="ip-newip-tag">데이터베이스</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- AI 변리사 챗봇 팝업 -->
+    <div id="chatbotPopup" class="chatbot-popup">
+      <div class="chatbot-popup-header">
+        <h3 class="chatbot-popup-title">AI 변리사</h3>
+        <button id="chatbotCloseBtn" class="chatbot-close-btn">✕</button>
+      </div>
+      <div class="chatbot-popup-body">
+        <div class="chatbot-messages" id="chatbotMessages">
+          <div class="chatbot-message chatbot-message-bot">
+            <div class="chatbot-message-content">
+              안녕하세요! AI 변리사입니다. 지식재산권에 대해 궁금한 점이 있으시면 언제든지 물어보세요.
+            </div>
+          </div>
+        </div>
+        <div class="chatbot-input-area">
+          <input 
+            type="text" 
+            id="chatbotInput" 
+            class="chatbot-input" 
+            placeholder="질문을 입력하세요..."
+          />
+          <button id="chatbotSendBtn" class="chatbot-send-btn">전송</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 챗봇 열기 버튼 -->
+    <button id="chatbotToggleBtn" class="chatbot-toggle-btn">
+      <span class="chatbot-toggle-icon">💬</span>
+      <span class="chatbot-toggle-text">AI 변리사</span>
+    </button>
+
+    <script type="module" src="/src/patent-chatbot.js"></script>
+    <script type="module">
+      import { initAuth } from '/src/auth.js';
+      initAuth();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vention - 발명 생산성 웹앱</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/assets/images/vention_remove.png" alt="Vention" class="logo-image" />
+          <p class="tagline">발명 생산성 웹앱</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="index.html" class="nav-item active">
+            <span class="nav-icon">🛖</span>
+            <span>홈</span>
+          </a>
+          
+          <!-- 학생용 탭 (로그인 시에만 표시) -->
+          <div id="studentNavItems" style="display: none;">
+            <a href="patent-chatbot.html" class="nav-item">
+              <span class="nav-icon">🧑🏼‍💻</span>
+              <span>AI 변리사</span>
+            </a>
+            <a href="idea-chatbot.html" class="nav-item">
+              <span class="nav-icon">🤓</span>
+              <span>아이디어 챗봇</span>
+            </a>
+            <a href="ai-sketch.html" class="nav-item">
+              <span class="nav-icon">✏️</span>
+              <span>AI스케치 정교화</span>
+            </a>
+            <a href="3d-modeling.html" class="nav-item">
+              <span class="nav-icon">🎨</span>
+              <span>3D 모델링</span>
+            </a>
+            <a href="3d-view.html" class="nav-item">
+              <span class="nav-icon">👁️</span>
+              <span>3D 뷰</span>
+            </a>
+          </div>
+        </nav>
+        
+        <!-- 교사 모니터링 및 로그아웃 (하단) -->
+        <div class="sidebar-footer">
+          <a href="teacherMonitor.html" class="nav-item" id="teacherMonitorLink" style="display: none;">
+            <span class="nav-icon">👨‍🏫</span>
+            <span>교사 모니터링</span>
+          </a>
+          <button class="nav-item" id="sidebarLogoutBtn" style="display: none; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 컨텐츠 -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1>Vention에 오신 것을 환영합니다</h1>
+          <p class="subtitle">중고등학생을 위한 발명 아이디어 개발 플랫폼</p>
+        </div>
+
+        <div class="content-section">
+          <!-- 로그인 섹션 (로그인 전) -->
+          <div class="login-section" id="loginSection">
+            <div class="hero-section">
+              <div class="hero-content">
+                <h1 class="hero-title">발명의 모든 과정, Vention 하나로.</h1>
+                <h2 class="hero-subtitle">AI와 함께 발명 아이디어를 업그레이드해 보세요!</h2>
+                <p class="hero-description">
+                  Vention은 여러분의 창의적인 발명 아이디어를 AI 챗봇과 대화하며 더 구체적이고 독창적으로 발전 및 시각화를 도와주는 플랫폼입니다.
+                </p>
+              </div>
+              
+              <div class="login-card">
+                <button id="googleLoginBtn" class="btn btn-google">
+                  <svg width="20" height="20" viewBox="0 0 18 18">
+                    <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                    <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                    <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.348 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/>
+                    <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z"/>
+                  </svg>
+                  <span>Google로 시작하기</span>
+                </button>
+                <p class="login-hint">Google 계정으로 간편하게 로그인하세요</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 로그인 후 콘텐츠 (로그인 전에는 숨김) -->
+          <div class="authenticated-content" id="authenticatedContent" style="display: none;">
+            <div class="welcome-card">
+              <h2>안녕하세요, <span id="userName"></span>님!</h2>
+              <p>
+                발명 아이디어를 입력하고 AI 챗봇과 대화하며 아이디어를 발전시켜보세요.
+              </p>
+            </div>
+
+            <div class="action-cards">
+              <div class="action-card">
+                <div class="card-icon">💡</div>
+                <h3>아이디어 챗봇</h3>
+                <p>아이디어를 입력하고 AI 챗봇과 대화하며 발명 아이디어를 발전시켜보세요.</p>
+                <a href="idea-chatbot.html" class="btn btn-primary">아이디어 챗봇 시작하기</a>
+              </div>
+            </div>
+
+            <div class="logout-section">
+              <button id="logoutBtn" class="btn btn-secondary">로그아웃</button>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h3>주요 기능</h3>
+            <ul class="feature-list">
+              <li>AI 변리사 특허 챗봇</li>
+              <li>AI 발명기법 챗봇(SCAMPER 기법 및 아이디어 평가, 분석석)</li>
+              <li>AI 아이디어 정교화</li>
+              <li>3D 모델링</li>
+              <li>3D 뷰</li>
+              <li>교사용 모니터링 대시보드</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div><footer style="text-align: center; padding: 20px; font-size: 0.9rem; color: #666;">
+      Copyright © 2025 <b>김가현(claude@snu.ac.kr)</b> | Released under the MIT License
+    </footer>
+    <script type="module" src="/src/index.js"></script>
+  </body>
+</html>

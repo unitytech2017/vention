@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>교사 모니터링 - Vention</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/assets/images/vention_remove.png" alt="Vention" class="logo-image" />
+          <h1 class="logo">Vention</h1>
+          <p class="tagline">발명 생산성 웹앱</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>홈</span>
+          </a>
+          
+          <!-- 학생용 탭 (로그인 시에만 표시) -->
+          <div id="studentNavItems" style="display: none;">
+            <a href="patent-chatbot.html" class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>AI 변리사</span>
+            </a>
+            <a href="idea-chatbot.html" class="nav-item">
+              <span class="nav-icon">💡</span>
+              <span>아이디어 챗봇</span>
+            </a>
+            <a href="ai-sketch.html" class="nav-item">
+              <span class="nav-icon">✏️</span>
+              <span>AI스케치 정교화</span>
+            </a>
+            <a href="3d-modeling.html" class="nav-item">
+              <span class="nav-icon">🎨</span>
+              <span>3D 모델링</span>
+            </a>
+            <a href="3d-view.html" class="nav-item">
+              <span class="nav-icon">👁️</span>
+              <span>3D 뷰</span>
+            </a>
+          </div>
+        </nav>
+        
+        <!-- 교사 모니터링 및 로그아웃 (하단) -->
+        <div class="sidebar-footer">
+          <a href="teacherMonitor.html" class="nav-item active" id="teacherMonitorLink" style="display: none;">
+            <span class="nav-icon">👨‍🏫</span>
+            <span>교사 모니터링</span>
+          </a>
+          <button class="nav-item" id="sidebarLogoutBtn" style="display: none; width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 컨텐츠 -->
+      <main class="main-content teacher-monitor-content">
+        <div class="page-header">
+          <h1>교사 모니터링</h1>
+          <p class="subtitle">학생들의 발명 활동을 확인하고 관리하세요</p>
+        </div>
+
+        <div class="monitor-layout">
+          <!-- 좌측: 날짜 필터 및 사용자 목록 -->
+          <aside class="monitor-sidebar">
+            <div class="filter-section">
+              <h3 class="filter-title">날짜 필터</h3>
+              <div id="dateFilterList" class="date-filter-list">
+                <p class="loading-text">데이터를 불러오는 중...</p>
+              </div>
+            </div>
+            
+            <div class="user-list-section">
+              <h3 class="filter-title">사용자 목록</h3>
+              <div id="userList" class="user-list">
+                <p class="empty-text">날짜를 선택해주세요</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- 가운데: 대화 내용 -->
+          <section class="conversation-section">
+            <div class="section-header">
+              <h2>대화 내용</h2>
+            </div>
+            <div id="conversationContent" class="conversation-content">
+              <div class="empty-state">
+                <p>좌측에서 사용자를 선택해주세요</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 오른쪽: 평가 내용 -->
+          <section class="evaluation-section">
+            <div class="section-header">
+              <h2>챗봇 평가</h2>
+            </div>
+            <div id="evaluationContent" class="evaluation-content">
+              <div class="empty-state">
+                <p>좌측에서 사용자를 선택해주세요</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/teacherMonitor.js"></script>
+    <script type="module">
+      import { initAuth } from '/src/auth.js';
+      initAuth();
+    </script>
+  </body>
+</html>
