@@ -141,6 +141,9 @@ function saveMeshyApiKey() {
     return;
   }
   
+  // API 키 저장 시 비밀번호 인증 상태 제거 (사용자 API 키 우선)
+  localStorage.removeItem(MESHY_PASSWORD_STORAGE_KEY);
+  
   localStorage.setItem(MESHY_API_KEY_STORAGE_KEY, apiKey);
   showApiKeyMessage('✅ API 키가 저장되었습니다.', 'success');
   updateGenerateButton();
@@ -154,10 +157,14 @@ function saveMeshyApiKey() {
 
 // 저장된 Meshy API 키 불러오기
 function loadMeshyApiKey() {
-  const savedApiKey = localStorage.getItem(MESHY_API_KEY_STORAGE_KEY);
-  if (savedApiKey && meshyApiKeyInput) {
-    meshyApiKeyInput.value = savedApiKey;
-    showApiKeyMessage('✅ 저장된 API 키가 로드되었습니다.', 'success');
+  // 비밀번호 인증 상태가 아니면 저장된 API 키 불러오기
+  const isPasswordVerified = localStorage.getItem(MESHY_PASSWORD_STORAGE_KEY) === 'true';
+  if (!isPasswordVerified) {
+    const savedApiKey = localStorage.getItem(MESHY_API_KEY_STORAGE_KEY);
+    if (savedApiKey && meshyApiKeyInput) {
+      meshyApiKeyInput.value = savedApiKey;
+      showApiKeyMessage('✅ 저장된 API 키가 로드되었습니다.', 'success');
+    }
   }
   updateGenerateButton();
 }
@@ -166,7 +173,7 @@ function loadMeshyApiKey() {
 function loadMeshyPassword() {
   const isPasswordVerified = localStorage.getItem(MESHY_PASSWORD_STORAGE_KEY) === 'true';
   if (isPasswordVerified) {
-    showApiKeyMessage('✅ 비밀번호가 확인되었습니다. (내부 API 키 사용)', 'success');
+    showApiKeyMessage('✅ 비밀번호가 확인되었습니다. (서버 API 키 사용)', 'success');
   }
   updateGenerateButton();
 }
@@ -187,12 +194,14 @@ function saveMeshyPassword() {
     return;
   }
   
-  localStorage.setItem(MESHY_PASSWORD_STORAGE_KEY, 'true');
-  localStorage.removeItem(MESHY_API_KEY_STORAGE_KEY); // API 키 입력 필드 초기화
+  // 비밀번호 인증 시 사용자 API 키 제거 (환경변수 API 키 사용)
+  localStorage.removeItem(MESHY_API_KEY_STORAGE_KEY);
   if (meshyApiKeyInput) {
     meshyApiKeyInput.value = '';
   }
-  showApiKeyMessage('✅ 비밀번호가 확인되었습니다. (내부 API 키 사용)', 'success');
+  
+  localStorage.setItem(MESHY_PASSWORD_STORAGE_KEY, 'true');
+  showApiKeyMessage('✅ 비밀번호가 확인되었습니다. (서버 API 키 사용)', 'success');
   if (meshyPasswordInput) {
     meshyPasswordInput.value = '';
   }
@@ -207,20 +216,30 @@ function saveMeshyPassword() {
 
 // 현재 사용 가능한 API 키 가져오기
 function getMeshyApiKey() {
-  // 비밀번호 확인 상태 확인
+  // 비밀번호가 확인되었으면 환경변수 API 키 우선 사용
   const isPasswordVerified = localStorage.getItem(MESHY_PASSWORD_STORAGE_KEY) === 'true';
   if (isPasswordVerified) {
-    // .env에 저장된 API 키 사용
-    return import.meta.env.VITE_MESHY_API_KEY || '';
+    const envApiKey = import.meta.env.VITE_MESHY_API_KEY;
+    if (envApiKey) {
+      console.log('비밀번호 인증: 환경변수 API 키 사용');
+      return envApiKey;
+    }
   }
   
-  // 사용자가 입력한 API 키 우선 사용
+  // 비밀번호 인증이 없으면 사용자가 입력한 API 키 사용
   const inputKey = meshyApiKeyInput?.value.trim();
   if (inputKey) {
+    console.log('사용자 API 키 사용');
     return inputKey;
   }
   // localStorage에서 가져오기
-  return localStorage.getItem(MESHY_API_KEY_STORAGE_KEY) || '';
+  const savedKey = localStorage.getItem(MESHY_API_KEY_STORAGE_KEY);
+  if (savedKey) {
+    console.log('저장된 사용자 API 키 사용');
+    return savedKey;
+  }
+  
+  return '';
 }
 
 // API 키 메시지 표시
@@ -246,10 +265,14 @@ function updateGenerateButton() {
   const hasApiKey = !!apiKey;
   const hasSketch = !!enhancedSketch;
   const isPasswordVerified = localStorage.getItem(MESHY_PASSWORD_STORAGE_KEY) === 'true';
+  const userApiKey = meshyApiKeyInput?.value.trim() || localStorage.getItem(MESHY_API_KEY_STORAGE_KEY);
   
-  generateBtn.disabled = !hasApiKey || !hasSketch;
+  // API 키 또는 비밀번호 인증 중 하나라도 있어야 함
+  const isAuthenticated = !!(userApiKey || (isPasswordVerified && import.meta.env.VITE_MESHY_API_KEY));
   
-  if (!hasApiKey && !isPasswordVerified) {
+  generateBtn.disabled = !isAuthenticated || !hasSketch;
+  
+  if (!isAuthenticated) {
     generateBtn.title = '먼저 Meshy API 키를 입력하거나 비밀번호를 확인해주세요.';
   } else if (!hasSketch) {
     generateBtn.title = '먼저 AI 스케치 정교화 페이지에서 이미지를 생성해주세요.';
