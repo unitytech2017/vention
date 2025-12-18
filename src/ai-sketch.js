@@ -107,6 +107,9 @@ function saveApiKey() {
     return;
   }
   
+  // API 키 저장 시 비밀번호 인증 상태 제거 (사용자 API 키 우선)
+  localStorage.removeItem(PASSWORD_STORAGE_KEY);
+  
   localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
   showApiKeyMessage('✅ API 키가 저장되었습니다.', 'success');
   updateEnhanceButton();
@@ -132,8 +135,14 @@ function savePassword() {
     return;
   }
   
+  // 비밀번호 인증 시 사용자 API 키 제거 (환경변수 API 키 사용)
+  localStorage.removeItem(API_KEY_STORAGE_KEY);
+  if (apiKeyInput) {
+    apiKeyInput.value = '';
+  }
+  
   localStorage.setItem(PASSWORD_STORAGE_KEY, 'verified');
-  showApiKeyMessage('✅ 비밀번호가 확인되었습니다.', 'success');
+  showApiKeyMessage('✅ 비밀번호가 확인되었습니다. (서버 API 키 사용)', 'success');
   passwordInput.value = '';
   updateEnhanceButton();
   
@@ -146,10 +155,14 @@ function savePassword() {
 
 // API 키 불러오기
 function loadApiKey() {
-  const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
-  if (savedKey) {
-    apiKeyInput.value = savedKey;
-    updateEnhanceButton();
+  // 비밀번호 인증 상태가 아니면 저장된 API 키 불러오기
+  const isPasswordVerified = localStorage.getItem(PASSWORD_STORAGE_KEY) === 'verified';
+  if (!isPasswordVerified) {
+    const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+    if (savedKey) {
+      apiKeyInput.value = savedKey;
+      updateEnhanceButton();
+    }
   }
 }
 
@@ -161,21 +174,23 @@ function loadPassword() {
   }
 }
 
-// 사용할 API 키 가져오기 (사용자 API 키 우선, 없으면 환경변수)
+// 사용할 API 키 가져오기
 function getApiKey() {
-  // 1. 사용자가 입력한 API 키가 있으면 그것 사용
-  const userApiKey = apiKeyInput.value.trim() || localStorage.getItem(API_KEY_STORAGE_KEY);
-  if (userApiKey) {
-    return userApiKey;
-  }
-  
-  // 2. 비밀번호가 확인되었으면 환경변수 API 키 사용
+  // 비밀번호가 확인되었으면 환경변수 API 키 우선 사용
   const isPasswordVerified = localStorage.getItem(PASSWORD_STORAGE_KEY) === 'verified';
   if (isPasswordVerified) {
     const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
     if (envApiKey) {
+      console.log('비밀번호 인증: 환경변수 API 키 사용');
       return envApiKey;
     }
+  }
+  
+  // 비밀번호 인증이 없으면 사용자가 입력한 API 키 사용
+  const userApiKey = apiKeyInput.value.trim() || localStorage.getItem(API_KEY_STORAGE_KEY);
+  if (userApiKey) {
+    console.log('사용자 API 키 사용');
+    return userApiKey;
   }
   
   return '';
